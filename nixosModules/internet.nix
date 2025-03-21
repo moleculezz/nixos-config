@@ -1,11 +1,11 @@
 { config, pkgs, ... }:
 {
   environment.systemPackages = with pkgs; [
-    vlc
-    gimp
-    inkscape
-    davinci-resolve
-    freecad
-    ffmpeg
+    firefox
+    google-chrome
+    zapzap
+    localsend
+    signal-desktop
   ];
 }
+

@@ -7,6 +7,8 @@
       noto-fonts
       font-awesome
       jetbrains-mono
+      carlito
+      caladea
       (nerdfonts.override {
         fonts = [
           "NerdFontsSymbolsOnly"

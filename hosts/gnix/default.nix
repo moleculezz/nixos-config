@@ -18,16 +18,8 @@
 
     ../../nixosModules
 
-    inputs.home-manager.nixosModules.home-manager {
-      home-manager = {
-        extraSpecialArgs = { inherit inputs; };
-        useGlobalPkgs = true;
-        useUserPackages = true;
-        users.${userSettings.username} = import ../../homeManagerModules;
-      };
-    }
   ];
 
   #my.hyprland.enable = false;
-  #my.fonts.enable = false;
+  my.fonts.enable = true;
 }

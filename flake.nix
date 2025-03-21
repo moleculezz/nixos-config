@@ -2,18 +2,21 @@
   description = "Framework 13 AMD flake";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    pdfstudio-fork.url = "github:daudi/nixpkgs/pdfstudio2024b";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
 
     # Disk manager
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
 
     # Home manager
-    home-manager.url = "github:nix-community/home-manager";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    # home-manager.url = "github:nix-community/home-manager/release-24.11";
+    # home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    
+    ghostty = {
+      url = "github:ghostty-org/ghostty";
+    };
 
     # Hyprland
     #hyprland.url = "github:hyprwm/Hyprland";
@@ -36,7 +39,7 @@
 
 
 
-  outputs = { nixpkgs, nixos-hardware, disko, home-manager, pdfstudio-fork, ...}@inputs:
+  outputs = { nixpkgs, nixos-hardware, disko, ghostty, ...}@inputs:
 
   let 
     systemSettings = {
@@ -52,13 +55,6 @@
 
     specialArgs = { inherit inputs; inherit systemSettings; inherit userSettings; };
 
-    overlay-pdfstudio = final: prev: {
-      fork = import pdfstudio-fork {
-        localSystem = { system = systemSettings.system; };
-        config.allowUnfree = true;
-      };
-    };
-
   in
   {
 
@@ -68,7 +64,6 @@
         system = systemSettings.system;
 
         modules = [
-          ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-pdfstudio ]; })
           ./hosts/gnix
         ];
       };

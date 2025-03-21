@@ -15,7 +15,7 @@
   };
 
   nix = {
-    package = pkgs.nixFlakes;
+    package = pkgs.nixVersions.stable;
 
     extraOptions = ''
       experimental-features = nix-command flakes
@@ -28,7 +28,8 @@
     };
   };
 
-  boot.kernelPackages = pkgs.linuxPackages_6_10;
+  boot.kernelPackages = pkgs.linuxPackages_6_12;
+  # boot.extraModulePackages = [ config.boot.kernelPackages.wireguard ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -52,6 +53,14 @@
 
   hardware.openrazer.enable = true;
   hardware.openrazer.users = [ userSettings.username ];
+
+  # Davinci Resolve
+  hardware.graphics = {
+   enable = true;
+   extraPackages = with pkgs; [
+     rocmPackages.clr.icd
+   ];
+ };
 
   networking.hostName = systemSettings.hostname; # Define your hostname.
   # Pick only one of the below networking options.
@@ -133,6 +142,7 @@
     gcc # Needed for neovim
     ripgrep # Neovim
     razergenie
+    wireguard-tools
     #kdePackages.dolphin
     #pavucontrol # Add this to manage audio controls.
     #brightnessctl # Add this to control device brightness
