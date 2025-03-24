@@ -11,6 +11,7 @@
     exfatprogs # Add this to format drives with exFAT fs.
     amdgpu_top # Add this to check GPU usage stats.
     parted
+    dig
     ventoy-full
     stow # Manage user config files
   ];

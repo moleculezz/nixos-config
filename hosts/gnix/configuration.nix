@@ -163,6 +163,15 @@
     polkitPolicyOwners = [ userSettings.username ];
   };
 
+  environment.etc = {
+    "1password/custom_allowed_browsers" = {
+      text = ''
+        .zen-wrapped
+      '';
+    mode = "0755";
+    };
+  };
+
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.

@@ -1,8 +1,9 @@
-{ config, pkgs, userSettings, ... }:
+{ config, pkgs, inputs, userSettings, ... }:
 {
   environment.systemPackages = with pkgs; [
     firefox
     google-chrome
+    inputs.zen-browser.packages."${pkgs.system}".default
     zapzap
     localsend
     syncthingtray

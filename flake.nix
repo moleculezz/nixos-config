@@ -13,10 +13,12 @@
     # home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
-    
+
     ghostty = {
       url = "github:ghostty-org/ghostty";
     };
+
+    zen-browser.url = "github:0xc000022070/zen-browser-flake";
 
     # Hyprland
     #hyprland.url = "github:hyprwm/Hyprland";
@@ -37,9 +39,7 @@
     #};
   };
 
-
-
-  outputs = { nixpkgs, nixos-hardware, disko, ghostty, ...}@inputs:
+  outputs = { nixpkgs, nixos-hardware, disko, ghostty, zen-browser, ...}@inputs:
 
   let 
     systemSettings = {
