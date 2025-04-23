@@ -26,7 +26,7 @@
     settings.folders = {
       "${userSettings.homeDir}/Documents" = {
         id = "Documents";
-        label = "Documents";
+        label = "GD's Documents";
         devices = [ "TrueNAS" ];
       };
     };
