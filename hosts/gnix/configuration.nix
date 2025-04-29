@@ -67,6 +67,11 @@
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
 
+  # Bootup taking over 3 minutes. NetworkManager-wait-online.service takes almost 2 minutes.
+  # Disable the service.
+  systemd.services.NetworkManager-wait-online.enable = false;
+  boot.initrd.systemd.network.wait-online.enable = false;
+
   # Set your time zone.
   time.timeZone = "America/Aruba";
 
