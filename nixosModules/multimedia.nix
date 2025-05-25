@@ -4,7 +4,7 @@
     vlc
     gimp
     inkscape
-    davinci-resolve
+    #davinci-resolve
     freecad
     ffmpeg
   ];
