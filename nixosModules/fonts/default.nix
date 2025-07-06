@@ -9,12 +9,8 @@
       jetbrains-mono
       carlito
       caladea
-      (nerdfonts.override {
-        fonts = [
-          "NerdFontsSymbolsOnly"
-          "JetBrainsMono"
-        ];
-      })
+      nerd-fonts.symbols-only
+      nerd-fonts.jetbrains-mono
     ];
   };
 }

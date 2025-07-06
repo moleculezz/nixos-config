@@ -2,7 +2,7 @@
   description = "Framework 13 AMD flake";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
 
     # Disk manager
     disko.url = "github:nix-community/disko";

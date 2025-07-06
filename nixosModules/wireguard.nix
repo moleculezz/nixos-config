@@ -21,6 +21,22 @@
         }
       ];
     };
+
+    wgInterprint = {
+      autostart = false;
+      address = [ "172.16.10.2/32" ];
+      listenPort = 51621;
+      privateKeyFile = "/home/gd/wireguard-keys/private";
+
+      peers = [
+        {
+          publicKey = "YVT8YvHUtjXWwxP5do2jylbFzZS9dM9z+vnwto8bJD0=";
+          allowedIPs = [ "172.16.10.0/24" "192.168.1.0/24" ];
+          endpoint = "graycloud.interprint.network:51621";
+          #persistentKeepalive = 25;
+        }
+      ];
+    };
   };
 
   # Define NetworkManager dispatcher script using the proper NixOS way

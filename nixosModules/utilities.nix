@@ -10,9 +10,11 @@
     btop
     exfatprogs # Add this to format drives with exFAT fs.
     amdgpu_top # Add this to check GPU usage stats.
+    keymapp # Voyager Keyboard
+    libusb1 # Voyager Keyboard
     parted
     dig
-    ventoy-full
+    #ventoy-full
     stow # Manage user config files
   ];
 
@@ -33,5 +35,16 @@
   };
 
   services.teamviewer.enable = true;
+
+  # Voyager Keyboard
+  users.groups.plugdev = {};
+  services.udev.enable = true;
+  services.udev.extraRules = ''
+    # Rules for Oryx web flashing and live training
+    # KERNEL=="hidraw*", ATTRS{idVendor}=="16c0", MODE="0664", GROUP="plugdev"
+    # KERNEL=="hidraw*", ATTRS{idVendor}=="3297", MODE="0664", GROUP="plugdev"
+    KERNEL=="hidraw*", ATTRS{idVendor}=="16c0", MODE="0664", TAG+="uaccess"
+    KERNEL=="hidraw*", ATTRS{idVendor}=="3297", MODE="0664", TAG+="uaccess"
+  '';
 }
 

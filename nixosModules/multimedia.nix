@@ -2,7 +2,7 @@
 {
   environment.systemPackages = with pkgs; [
     vlc
-    gimp
+    gimp3
     inkscape
     #davinci-resolve
     freecad

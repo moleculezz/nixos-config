@@ -28,7 +28,6 @@
     };
   };
 
-  boot.kernelPackages = pkgs.linuxPackages_6_12;
   # boot.extraModulePackages = [ config.boot.kernelPackages.wireguard ];
 
   # Use the systemd-boot EFI boot loader.
@@ -133,7 +132,7 @@
   users.users.${userSettings.username} = {
     description = userSettings.name;
     isNormalUser = true;
-    extraGroups = [ "wheel" "video" "audio" "disk" "networkmanager" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" "video" "audio" "disk" "networkmanager" "plugdev" ]; # Enable ‘sudo’ for the user.
     initialHashedPassword = "$y$j9T$9DM4/7clQGEAY5SsRjEuu0$56AZgy91xnZtKNAuZYEWAY160SEWHQ26uhka4lCO/LA"; # password is "changeme"
   };
 
