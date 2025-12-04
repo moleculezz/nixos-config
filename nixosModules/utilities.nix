@@ -13,6 +13,11 @@
     keymapp # Voyager Keyboard
     libusb1 # Voyager Keyboard
     parted
+    net-tools
+    pciutils
+    usbutils
+    #unifi
+    nmap
     dig
     #ventoy-full
     stow # Manage user config files
@@ -20,21 +25,39 @@
 
   programs = {
     neovim.enable = true;
-    fish.enable = true;
+    zsh = {
+      enable = true;
+      autosuggestions.enable = true;
+      enableCompletion = true;
+      zsh-autoenv.enable = true;
+      syntaxHighlighting.enable = true;
+      ohMyZsh = {
+        enable = true;
+        plugins = [
+          "git"
+          "history"
+        ];
+      };
+    };
     starship.enable = true;
-  };
-
-  programs.bash = {
-    interactiveShellInit = ''
-      if [[ $(${pkgs.procps}/bin/ps --no-header --pid=$PPID --format=comm) != "fish" && -z ''${BASH_EXECUTION_STRING} ]]
-      then
-        shopt -q login_shell && LOGIN_OPTION='--login' || LOGIN_OPTION=""
-        exec ${pkgs.fish}/bin/fish $LOGIN_OPTION
-      fi
-    '';
+    zoxide.enable = true;
   };
 
   services.teamviewer.enable = true;
+  services.unifi.enable = true;
+  services.unifi.unifiPackage = pkgs.unifi;
+  services.unifi.mongodbPackage = pkgs.mongodb-ce;
+  networking.firewall.allowedTCPPorts = [ 
+    8080   # Device inform (already have this)
+    8443   # Controller web interface and device management
+    8880   # HTTP portal redirect
+    8843   # HTTPS portal redirect
+    6789   # Speed test
+  ];
+  networking.firewall.allowedUDPPorts = [
+    3478   # STUN for remote access
+    10001  # Device discovery
+  ];
 
   # Voyager Keyboard
   users.groups.plugdev = {};

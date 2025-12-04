@@ -29,6 +29,7 @@
   };
 
   # boot.extraModulePackages = [ config.boot.kernelPackages.wireguard ];
+  #boot.kernelPackages = pkgs.linuxPackages_6_16;  # or try 6_1
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -130,11 +131,13 @@
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   #users.mutableUsers = false;
+  users.defaultUserShell = pkgs.zsh;
   users.users.${userSettings.username} = {
     description = userSettings.name;
     isNormalUser = true;
     extraGroups = [ "wheel" "video" "audio" "disk" "networkmanager" "plugdev" ]; # Enable ‘sudo’ for the user.
     initialHashedPassword = "$y$j9T$9DM4/7clQGEAY5SsRjEuu0$56AZgy91xnZtKNAuZYEWAY160SEWHQ26uhka4lCO/LA"; # password is "changeme"
+    shell = pkgs.zsh;
   };
 
   nixpkgs.config.allowUnfree = true;
