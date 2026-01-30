@@ -1,10 +1,10 @@
-{ config, pkgs, inputs, ... }:
+{ config, pkgs, ... }:
 {
   environment.systemPackages = with pkgs; [
     lsd
     fastfetch
     alacritty
-    inputs.ghostty.packages."${pkgs.system}".default
+    ghostty
     fzf
     unzip
     btop
@@ -13,12 +13,12 @@
     keymapp # Voyager Keyboard
     libusb1 # Voyager Keyboard
     parted
+    nmap
     net-tools
     pciutils
     usbutils
-    #unifi
-    nmap
     dig
+    unifi
     #ventoy-full
     stow # Manage user config files
   ];
@@ -47,6 +47,8 @@
   services.unifi.enable = true;
   services.unifi.unifiPackage = pkgs.unifi;
   services.unifi.mongodbPackage = pkgs.mongodb-ce;
+  #services.mongodb.enable = true;
+  #services.mongodb.package = pkgs.mongodb-ce;
   networking.firewall.allowedTCPPorts = [ 
     8080   # Device inform (already have this)
     8443   # Controller web interface and device management

@@ -1,11 +1,12 @@
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, systemSettings, ... }:
 {
   environment.systemPackages = with pkgs; [
     vlc
     gimp3
     inkscape
     #davinci-resolve
-    freecad
+    #freecad
     ffmpeg
+    inputs.affinity-nix.packages.${pkgs.system}.v3
   ];
 }
