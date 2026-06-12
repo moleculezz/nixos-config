@@ -17,6 +17,7 @@
     net-tools
     pciutils
     usbutils
+    ncurses
     dig
     unifi
     #ventoy-full
@@ -42,6 +43,10 @@
     starship.enable = true;
     zoxide.enable = true;
   };
+
+  programs.wireshark.enable = true;
+  programs.wireshark.package = pkgs.wireshark;
+  #users.users..extraGroups = [ "wireshark" ];
 
   services.teamviewer.enable = true;
   services.unifi.enable = true;
