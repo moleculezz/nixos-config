@@ -37,6 +37,7 @@
 
   # Add ZFS support
   boot.supportedFilesystems = ["zfs"];
+  boot.zfs.forceImportRoot = false;
   networking.hostId = "06919496";
 
   # Add LUKS & Yubikey
@@ -141,6 +142,7 @@
   };
 
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.overlays = [ inputs.affinity-nix.overlays.default ];
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget

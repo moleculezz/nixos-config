@@ -7,6 +7,6 @@
     #davinci-resolve
     #freecad
     ffmpeg
-    inputs.affinity-nix.packages.${pkgs.system}.affinity-v3
+    affinity-v3
   ];
 }
