@@ -3,8 +3,8 @@
   environment.systemPackages = with pkgs; [
     firefox
     google-chrome
+    inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
     zapzap
-    inputs.zen-browser.packages."${pkgs.system}".default
     localsend
     syncthingtray
     signal-desktop
