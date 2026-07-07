@@ -7,6 +7,7 @@
       #./hyprland
       ./fonts
       ./utilities.nix
+      ./network-shares.nix
       ./office.nix
       ./multimedia.nix
       ./development.nix
