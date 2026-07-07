@@ -1,3 +1,5 @@
+{ config, pkgs, ... }:
+
 let
   mkWorkShare = shareName: {
     device = "//nas.local/${shareName}";
@@ -21,8 +23,6 @@ in {
   fileSystems."/mnt/interprint/ctprint" = mkWorkShare "ctprint";
   fileSystems."/mnt/interprint/share" = mkWorkShare "share";
   fileSystems."/mnt/interprint/data" = mkWorkShare "data";
-  fileSystems."/mnt/interprint/warehouse" = mkWorkShare "warehouse";
-  fileSystems."/mnt/interprint/share2" = mkWorkShare "Share2Name";
 
   #fileSystems."/mnt/home/homeshare" = mkHomeShare "homeshare";
 }
