@@ -6,5 +6,9 @@
     code-cursor
     claude-code
   ];
+
+  programs.git.config = {
+      init.defaultBranch = "main";
+  };
 }
 

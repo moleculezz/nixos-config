@@ -23,7 +23,7 @@
     #ventoy-full
     stow # Manage user config files
   ];
-
+programs.partition-manager.enable = true;  # NixOS 23.11+
   programs = {
     neovim.enable = true;
     zsh = {
