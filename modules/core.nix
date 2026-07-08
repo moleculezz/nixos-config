@@ -1,0 +1,233 @@
+{ config, inputs, ... }:
+let
+  username = config.settings.username;
+  name = config.settings.name;
+  hostname = config.settings.hostname;
+  hostId = config.settings.hostId;
+  timezone = config.settings.timezone;
+  locale = config.settings.locale;
+  keyboardLayout = config.settings.keyboardLayout;
+in {
+  flake.modules.nixos.core = { config, pkgs, ... }: {
+    # This displays the changes made when doing a nix rebuild switch
+    system.activationScripts.diff = {
+      supportsDryActivation = true;
+      text = ''
+        ${pkgs.nvd}/bin/nvd --nix-bin-dir=${pkgs.nix}/bin diff \
+          /run/current-system "$systemConfig"
+      '';
+    };
+
+    nix = {
+      package = pkgs.nixVersions.stable;
+
+      extraOptions = ''
+        experimental-features = nix-command flakes
+      '';
+
+      gc = {
+        automatic = true;
+        dates = "weekly";
+        options = "--delete-older-than 30d";
+      };
+    };
+
+    # boot.extraModulePackages = [ config.boot.kernelPackages.wireguard ];
+    #boot.kernelPackages = pkgs.linuxPackages_6_16;  # or try 6_1
+
+    # Use the systemd-boot EFI boot loader.
+    boot.loader.systemd-boot.enable = true;
+    boot.loader.efi.canTouchEfiVariables = true;
+
+    # Add ZFS support
+    boot.supportedFilesystems = ["zfs"];
+    boot.zfs.forceImportRoot = false;
+    networking.hostId = hostId;
+
+    # Add LUKS & Yubikey
+    # https://discourse.nixos.org/t/fde-using-systemd-cryptenroll-with-fido2-key/47762/1
+    # https://research.kudelskisecurity.com/2023/12/14/luks-disk-encryption-with-fido2/
+    boot.initrd = {
+      systemd.enable = true;  # initrd uses systemd
+      luks.fido2Support = false;  # because systemd
+      luks.devices.nvme0n1p3_encrypted = {
+        device = "/dev/disk/by-partlabel/disk-nvme-luks";
+        crypttabExtraOpts = ["fido2-device=auto"];  # cryptenroll
+      };
+    };
+
+    hardware.openrazer.enable = true;
+    hardware.openrazer.users = [ username ];
+
+    # Davinci Resolve
+    hardware.graphics = {
+     enable = true;
+     extraPackages = with pkgs; [
+       rocmPackages.clr.icd
+     ];
+   };
+
+    networking.hostName = hostname; # Define your hostname.
+    # Pick only one of the below networking options.
+    # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+    networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+
+    # Bootup taking over 3 minutes. NetworkManager-wait-online.service takes almost 2 minutes.
+    # Disable the service.
+    systemd.services.NetworkManager-wait-online.enable = false;
+    boot.initrd.systemd.network.wait-online.enable = false;
+
+    # Set your time zone.
+    time.timeZone = timezone;
+
+    # Select internationalisation properties.
+    i18n.defaultLocale = locale;
+    console = {
+      useXkbConfig = true; # use xkb.options in tty.
+    };
+
+    services.xserver = {
+      enable = true;
+      xkb = {
+        variant = "";
+        layout = keyboardLayout;
+      };
+    };
+    services.libinput.enable = true;
+
+    services.desktopManager.plasma6.enable = true;
+
+
+    # Enable pipewire
+    security.rtkit.enable = true;
+    services.pipewire = {
+      enable = true;
+      wireplumber.enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      pulse.enable = true;
+    };
+
+    hardware.bluetooth = {
+      enable = true;
+      powerOnBoot = true;
+      # package = pkgs.bluez5-experimental;
+      settings.Policy.AutoEnable = "true";
+      settings.General.Enable = "Source,Sink,Media,Socket";
+    };
+    #services.blueman.enable = true;
+
+    # Hibernate is unsafe here for two independent reasons, neither a quick fix:
+    # - ZFS root: NixOS's zfs.nix always sets `nohibernate` unless
+    #   boot.zfs.unsafeAllowHibernation is set, since resuming with an imported
+    #   pool risks corruption.
+    # - Framework 13 AMD 7040 + amdgpu has an open kernel bug causing
+    #   reboot/black-screen instead of resume (NixOS/nixpkgs#413932).
+    systemd.targets.hibernate.enable = false;
+
+    services.fwupd.enable = true;
+
+    # Enable CUPS to print documents.
+    services.printing.enable = true;
+    services.printing.drivers = [ pkgs.hplip ];
+    services.avahi = {
+      enable = true;
+      nssmdns4 = true;
+      openFirewall = true;
+    };
+
+    # Enable sound.
+    # sound.enable = true;
+    # hardware.pulseaudio.enable = true;
+
+    # Define a user account. Don't forget to set a password with 'passwd'.
+    #users.mutableUsers = false;
+    users.defaultUserShell = pkgs.zsh;
+    users.users.${username} = {
+      description = name;
+      isNormalUser = true;
+      extraGroups = [ "wheel" "video" "audio" "disk" "networkmanager" "plugdev" ]; # Enable 'sudo' for the user.
+      initialHashedPassword = "$y$j9T$9DM4/7clQGEAY5SsRjEuu0$56AZgy91xnZtKNAuZYEWAY160SEWHQ26uhka4lCO/LA"; # password is "changeme"
+      shell = pkgs.zsh;
+    };
+
+    nixpkgs.config.allowUnfree = true;
+    nixpkgs.overlays = [ inputs.affinity-nix.overlays.default ];
+
+    # List packages installed in system profile. To search, run:
+    # $ nix search wget
+    environment.systemPackages = with pkgs; [
+      vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+      git
+      gcc # Needed for neovim
+      ripgrep # Neovim
+      razergenie
+      wireguard-tools
+      #kdePackages.dolphin
+      #pavucontrol # Add this to manage audio controls.
+      #brightnessctl # Add this to control device brightness
+      #playerctl # Add this to control media players play/pause etc.
+    ];
+
+    # Some programs need SUID wrappers, can be configured further or are
+    # started in user sessions.
+    # programs.mtr.enable = true;
+    # programs.gnupg.agent = {
+    #   enable = true;
+    #   enableSSHSupport = true;
+    # };
+
+    programs._1password.enable = true;
+    programs._1password-gui = {
+      enable = true;
+      polkitPolicyOwners = [ username ];
+    };
+
+    environment.etc = {
+      "1password/custom_allowed_browsers" = {
+        text = ''
+          .zen-wrapped
+        '';
+      mode = "0755";
+      };
+    };
+
+    # List services that you want to enable:
+
+    # Enable the OpenSSH daemon.
+    # services.openssh.enable = true;
+
+    # ZFS services
+    services.zfs.autoSnapshot.enable = true;
+    services.zfs.autoScrub.enable = true;
+
+    # Open ports in the firewall.
+    # networking.firewall.allowedTCPPorts = [ ... ];
+    # networking.firewall.allowedUDPPorts = [ ... ];
+    # Or disable the firewall altogether.
+    # networking.firewall.enable = false;
+
+    # Copy the NixOS configuration file and link it from the resulting system
+    # (/run/current-system/configuration.nix). This is useful in case you
+    # accidentally delete configuration.nix.
+    # system.copySystemConfiguration = true;
+
+    # This option defines the first version of NixOS you have installed on this particular machine,
+    # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.
+    #
+    # Most users should NEVER change this value after the initial install, for any reason,
+    # even if you've upgraded your system to a new NixOS release.
+    #
+    # This value does NOT affect the Nixpkgs version your packages and OS are pulled from,
+    # so changing it will NOT upgrade your system.
+    #
+    # This value being lower than the current NixOS release does NOT mean your system is
+    # out of date, out of support, or vulnerable.
+    #
+    # Do NOT change this value unless you have manually inspected all the changes it would make to your configuration,
+    # and migrated your data accordingly.
+    #
+    # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
+    system.stateVersion = "23.11"; # Did you read the comment?
+  };
+}
