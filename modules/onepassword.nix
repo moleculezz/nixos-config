@@ -1,0 +1,12 @@
+{ config, ... }:
+let
+  username = config.settings.username;
+in {
+  flake.modules.nixos.onepassword = { ... }: {
+    programs._1password.enable = true;
+    programs._1password-gui = {
+      enable = true;
+      polkitPolicyOwners = [ username ];
+    };
+  };
+}

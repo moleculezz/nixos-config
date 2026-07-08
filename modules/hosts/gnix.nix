@@ -27,6 +27,10 @@
       wireguard
       libvirt
       game
+      neovim
+      #davinci-resolve
+      onepassword
+      razer
 
       { my.fonts.enable = true; }
     ];

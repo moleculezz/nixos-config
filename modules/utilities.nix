@@ -25,7 +25,6 @@
     ];
     programs.partition-manager.enable = true;  # NixOS 23.11+
     programs = {
-      neovim.enable = true;
       zsh = {
         enable = true;
         autosuggestions.enable = true;

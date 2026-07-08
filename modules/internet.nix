@@ -14,6 +14,16 @@ in {
       signal-desktop
     ];
 
+    # Let 1Password's browser integration trust the wrapped zen-browser binary.
+    environment.etc = {
+      "1password/custom_allowed_browsers" = {
+        text = ''
+          .zen-wrapped
+        '';
+        mode = "0755";
+      };
+    };
+
     services.syncthing = {
       enable = true;
       user = username;

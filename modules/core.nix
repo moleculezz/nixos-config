@@ -53,17 +53,6 @@ in {
       };
     };
 
-    hardware.openrazer.enable = true;
-    hardware.openrazer.users = [ username ];
-
-    # Davinci Resolve
-    hardware.graphics = {
-     enable = true;
-     extraPackages = with pkgs; [
-       rocmPackages.clr.icd
-     ];
-   };
-
     networking.hostName = hostname; # Define your hostname.
     networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
 
@@ -147,26 +136,8 @@ in {
     environment.systemPackages = with pkgs; [
       vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
       git
-      gcc # Needed for neovim
-      ripgrep # Neovim
-      razergenie
       wireguard-tools
     ];
-
-    programs._1password.enable = true;
-    programs._1password-gui = {
-      enable = true;
-      polkitPolicyOwners = [ username ];
-    };
-
-    environment.etc = {
-      "1password/custom_allowed_browsers" = {
-        text = ''
-          .zen-wrapped
-        '';
-      mode = "0755";
-      };
-    };
 
     # ZFS services
     services.zfs.autoSnapshot.enable = true;

@@ -4,7 +4,6 @@
       vlc
       gimp3
       inkscape
-      #davinci-resolve
       #freecad
       ffmpeg
       affinity-v3
