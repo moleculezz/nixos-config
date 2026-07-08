@@ -32,9 +32,6 @@ in {
       };
     };
 
-    # boot.extraModulePackages = [ config.boot.kernelPackages.wireguard ];
-    #boot.kernelPackages = pkgs.linuxPackages_6_16;  # or try 6_1
-
     # Use the systemd-boot EFI boot loader.
     boot.loader.systemd-boot.enable = true;
     boot.loader.efi.canTouchEfiVariables = true;
@@ -68,8 +65,6 @@ in {
    };
 
     networking.hostName = hostname; # Define your hostname.
-    # Pick only one of the below networking options.
-    # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
     networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
 
     # Bootup taking over 3 minutes. NetworkManager-wait-online.service takes almost 2 minutes.
@@ -111,11 +106,9 @@ in {
     hardware.bluetooth = {
       enable = true;
       powerOnBoot = true;
-      # package = pkgs.bluez5-experimental;
       settings.Policy.AutoEnable = "true";
       settings.General.Enable = "Source,Sink,Media,Socket";
     };
-    #services.blueman.enable = true;
 
     # Hibernate is unsafe here for two independent reasons, neither a quick fix:
     # - ZFS root: NixOS's zfs.nix always sets `nohibernate` unless
@@ -136,12 +129,7 @@ in {
       openFirewall = true;
     };
 
-    # Enable sound.
-    # sound.enable = true;
-    # hardware.pulseaudio.enable = true;
-
     # Define a user account. Don't forget to set a password with 'passwd'.
-    #users.mutableUsers = false;
     users.defaultUserShell = pkgs.zsh;
     users.users.${username} = {
       description = name;
@@ -163,19 +151,7 @@ in {
       ripgrep # Neovim
       razergenie
       wireguard-tools
-      #kdePackages.dolphin
-      #pavucontrol # Add this to manage audio controls.
-      #brightnessctl # Add this to control device brightness
-      #playerctl # Add this to control media players play/pause etc.
     ];
-
-    # Some programs need SUID wrappers, can be configured further or are
-    # started in user sessions.
-    # programs.mtr.enable = true;
-    # programs.gnupg.agent = {
-    #   enable = true;
-    #   enableSSHSupport = true;
-    # };
 
     programs._1password.enable = true;
     programs._1password-gui = {
@@ -192,25 +168,9 @@ in {
       };
     };
 
-    # List services that you want to enable:
-
-    # Enable the OpenSSH daemon.
-    # services.openssh.enable = true;
-
     # ZFS services
     services.zfs.autoSnapshot.enable = true;
     services.zfs.autoScrub.enable = true;
-
-    # Open ports in the firewall.
-    # networking.firewall.allowedTCPPorts = [ ... ];
-    # networking.firewall.allowedUDPPorts = [ ... ];
-    # Or disable the firewall altogether.
-    # networking.firewall.enable = false;
-
-    # Copy the NixOS configuration file and link it from the resulting system
-    # (/run/current-system/configuration.nix). This is useful in case you
-    # accidentally delete configuration.nix.
-    # system.copySystemConfiguration = true;
 
     # This option defines the first version of NixOS you have installed on this particular machine,
     # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.
