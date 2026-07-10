@@ -1,4 +1,4 @@
-{ lib, inputs, ... }:
+{ lib, inputs, config, ... }:
 {
   imports = [ inputs.flake-parts.flakeModules.modules ];
 
@@ -24,7 +24,7 @@
     hostname = "gnix";
     hostId = "06919496";
     system = "x86_64-linux";
-    homeDir = "/home/gd";
+    homeDir = "/home/${config.settings.username}";
     timezone = "America/Aruba";
     locale = "en_US.UTF-8";
     keyboardLayout = "us";

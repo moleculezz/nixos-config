@@ -45,14 +45,11 @@
 
     programs.wireshark.enable = true;
     programs.wireshark.package = pkgs.wireshark;
-    #users.users..extraGroups = [ "wireshark" ];
 
     services.teamviewer.enable = true;
     services.unifi.enable = true;
     services.unifi.unifiPackage = pkgs.unifi;
     services.unifi.mongodbPackage = pkgs.mongodb-ce;
-    #services.mongodb.enable = true;
-    #services.mongodb.package = pkgs.mongodb-ce;
     networking.firewall.allowedTCPPorts = [
       8080   # Device inform (already have this)
       8443   # Controller web interface and device management

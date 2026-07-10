@@ -8,7 +8,7 @@ let
   locale = config.settings.locale;
   keyboardLayout = config.settings.keyboardLayout;
 in {
-  flake.modules.nixos.core = { config, pkgs, ... }: {
+  flake.modules.nixos.core = { pkgs, ... }: {
     # This displays the changes made when doing a nix rebuild switch
     system.activationScripts.diff = {
       supportsDryActivation = true;

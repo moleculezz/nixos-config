@@ -28,7 +28,7 @@ in {
       enable = true;
       user = username;
       dataDir = "${homeDir}/syncthing";
-      configDir = "${homeDir}/.config/syncthinig";
+      configDir = "${homeDir}/.config/syncthing";
 
       settings.devices = {
         TrueNAS = {

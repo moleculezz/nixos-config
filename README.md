@@ -22,7 +22,6 @@ Personal NixOS flake for `gnix` (Framework 13 AMD), organized with the
   `nixos-generate-config`).
 - `dotfiles/` — plain dotfiles managed manually with
   [GNU Stow](https://www.gnu.org/software/stow/), not home-manager.
-- `_attic/` — old/unreferenced files kept around rather than deleted.
 
 ## Installation instructions
 

@@ -1,4 +1,7 @@
-{
+{ config, ... }:
+let
+  homeDir = config.settings.homeDir;
+in {
   flake.modules.nixos.wireguard = { pkgs, ... }: {
     #networking.firewall = {
     #  allowedUDPPorts = [ 51828 ];
@@ -9,7 +12,7 @@
         autostart = false;
         address = [ "10.8.88.5/32" ];
         #listenPort = 51828;
-        privateKeyFile = "/home/gd/wireguard-keys/private";
+        privateKeyFile = "${homeDir}/wireguard-keys/private";
 
         peers = [
           {
@@ -25,7 +28,7 @@
         autostart = false;
         address = [ "172.16.10.2/32" ];
         listenPort = 51621;
-        privateKeyFile = "/home/gd/wireguard-keys/private";
+        privateKeyFile = "${homeDir}/wireguard-keys/private";
 
         peers = [
           {

@@ -13,10 +13,6 @@
 
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
-    ghostty = {
-      url = "github:ghostty-org/ghostty";
-    };
-
     zen-browser.url = "github:0xc000022070/zen-browser-flake";
 
     affinity-nix.url = "github:mrshmllow/affinity-nix";
