@@ -3,12 +3,9 @@
     environment.systemPackages = with pkgs; [
       git-credential-manager
       gh
+      devenv
       code-cursor
       claude-code
     ];
-
-    programs.git.config = {
-      init.defaultBranch = "main";
-    };
   };
 }
