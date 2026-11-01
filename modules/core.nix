@@ -45,8 +45,6 @@ in {
     # https://discourse.nixos.org/t/fde-using-systemd-cryptenroll-with-fido2-key/47762/1
     # https://research.kudelskisecurity.com/2023/12/14/luks-disk-encryption-with-fido2/
     boot.initrd = {
-      systemd.enable = true;  # initrd uses systemd
-      luks.fido2Support = false;  # because systemd
       luks.devices.nvme0n1p3_encrypted = {
         device = "/dev/disk/by-partlabel/disk-nvme-luks";
         crypttabExtraOpts = ["fido2-device=auto"];  # cryptenroll
