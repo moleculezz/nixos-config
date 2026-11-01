@@ -12,6 +12,7 @@ in {
       localsend
       syncthingtray
       signal-desktop
+      rustdesk
     ];
 
     # Let 1Password's browser integration trust the wrapped zen-browser binary.
